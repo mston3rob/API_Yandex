@@ -17,8 +17,11 @@ class Example(QMainWindow):
         self.getImage()
         self.initUI()
 
-    def getImage(self):
-        self.current_LL = ('37.530887', '55.70311')
+    def getImage(self, ll=()):
+        if ll:
+            self.current_LL = ll
+        else:
+            self.current_LL = ('37.530887', '55.70311')
         self.current_spn = ('0.002', '0.002')
         self.current_map_type = 'map'
         api_server = "http://static-maps.yandex.ru/1.x/"
@@ -68,7 +71,9 @@ class Example(QMainWindow):
         current_delta = None
         if move == 'up':
             current_delta = (0, 1)
-        new_LL = (self.current_LL + current_delta[0], self.current_spn)
+        new_LL = (str(float(self.current_LL[0]) + float(current_delta[0])), str(float(self.current_LL[1]) + float(current_delta[1])))
+        print(new_LL)
+        self.image.setPixmap(QPixmap(self.map_file))
 
     def closeEvent(self, event):
         os.remove(self.map_file)
